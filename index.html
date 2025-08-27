@@ -1,117 +1,69 @@
-
 <!DOCTYPE html>
-	<html lang="en">
-	<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Product Filter</title>
-	<style>
-	body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 20px;
-	background: #f5f7fa;
-	}
-	.container {
-	max-width: 600px;
-	margin: 0 auto;
-	background: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-	}
-	h1 {
-	margin-top: 0;
-	color: #2c3e50;
-	}
-	.filter {
-	margin: 20px 0;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	}
-	select {
-	padding: 8px 12px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	background: white;
-	}
- 
-	hr {
-	border: none;
-	height: 1px;
-	background: #eee;
-	margin: 20px 0;
-	}
-	.product-list {
-	list-style-type: none;
-	padding: 0;
-	}
-	.product-item {
-	padding: 10px;
-	margin: 8px 0;
-	background: #f8f9fa;
-	border-left: 3px solid #3498db;
-border-radius: 3px;
-	}
-	</style>
-	</head>
-	<body>
-	<div class="container">
-	<h1>Product List</h1>
-	<div class="filter">
-	<label for="category">Filter by Category:</label>
-	<select id="category">
-	<option value="all">All</option>
-	<option value="Clothing">Clothing</option>
-	<option value="Electronics">Electronics</option>
-	<option value="Books">Books</option>
-	</select>
-	</div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Product Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .product {
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    select {
+      padding: 5px 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
 
-	<hr>
+  <h1>Product List</h1>
 
-	<div id="products"></div>
-	</div>
+  <!-- Dropdown Filter -->
+  <label for="categoryFilter">Filter by Category:</label>
+  <select id="categoryFilter">
+    <option value="all">All</option>
+    <option value="shoes">Shoes</option>
+    <option value="shirts">Shirts</option>
+    <option value="gadgets">Gadgets</option>
+  </select>
 
-	<script>
-	const products = [
-	{ name: "T-Shirt", category: "Clothing" },
-	{ name: "Jeans", category: "Clothing" },
-	{ name: "Headphones", category: "Electronics" },
-	{ name: "Smartphone", category: "Electronics" },
-	{ name: "Novel", category: "Books" },
- 
-	{ name: "Cookbook", category: "Books" }
-	];
+  <!-- Product List -->
+  <div id="productList">
+    <div class="product" data-category="shoes">Running Shoes</div>
+    <div class="product" data-category="shirts">Casual Shirt</div>
+    <div class="product" data-category="gadgets">Smartphone</div>
+    <div class="product" data-category="shoes">Formal Shoes</div>
+    <div class="product" data-category="shirts">T-shirt</div>
+    <div class="product" data-category="gadgets">Smartwatch</div>
+  </div>
 
+  <!-- JavaScript -->
+  <script>
+    const filterDropdown = document.getElementById('categoryFilter');
+    const productList = document.getElementById('productList');
+    const products = productList.getElementsByClassName('product');
 
-	const categorySelect = document.getElementById('category');
-	const productsContainer = document.getElementById('products');
-	function showProducts(category) {
-	productsContainer.innerHTML = '';
-	const filteredProducts = category === 'all'
-	? products
-	: products.filter(product => product.category === category);
+    filterDropdown.addEventListener('change', function () {
+      const selectedCategory = this.value;
 
-	const productList = document.createElement('ul');
-	productList.className = 'product-list';
+      for (let product of products) {
+        const productCategory = product.getAttribute('data-category');
 
-filteredProducts.forEach(product => {
-	const item = document.createElement('li');
-	item.className = 'product-item';
-	item.textContent = product.name;
-	productList.appendChild(item);
-	});
+        if (selectedCategory === 'all' || selectedCategory === productCategory) {
+          product.style.display = 'block';
+        } else {
+          product.style.display = 'none';
+        }
+      }
+    });
+  </script>
 
-	productsContainer.appendChild(productList);
-	}
-
-	categorySelect.addEventListener('change', () => {
-	showProducts(categorySelect.value);
-	});
-
-showProducts('all');
-</script>
 </body>
-	</html>
+</html>
